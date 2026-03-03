@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哎呀，出问题了</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            cursor: none;
+        }
+        body {
+            background-color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+        .cursor-follower {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 182, 193, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+        }
+        .cursor-follower.hover {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 182, 193, 0.4);
+        }
+        .container {
+            max-width: 650px;
+            background: linear-gradient(135deg, #fff 0%, #fff5f7 100%);
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(255, 182, 193, 0.15);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 182, 193, 0.2);
+        }
+        .error-code {
+            font-size: 88px;
+            font-weight: 700;
+            color: #ff6b8b;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(255, 107, 139, 0.1);
+        }
+        .error-desc {
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #ff8fa3;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 8px;
+            border: none;
+            cursor: none;
+        }
+        .back-btn:hover {
+            background-color: #ff6b8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 139, 0.2);
+        }
+        .explain-title {
+            font-size: 36px;
+            margin-bottom: 25px;
+            color: #ff6b8b;
+            text-shadow: 0 2px 8px rgba(255, 107, 139, 0.1);
+        }
+        .explain-list {
+            text-align: left;
+            margin: 25px 0 35px;
+            line-height: 1.9;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
+        }
+        .explain-list li {
+            margin-bottom: 12px;
+            list-style: none;
+            padding-left: 24px;
+            position: relative;
+            font-size: 16px;
+            color: #666;
+        }
+        .explain-list li::before {
+            content: "•";
+            color: #ff8fa3;
+            position: absolute;
+            left: 0;
+            font-size: 22px;
+        }
+        code {
+            background-color: #fff5f7;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #ff6b8b;
+            font-family: "Consolas", monospace;
+        }
+        a {
+            color: #ff6b8b;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: #ff4757;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-follower"></div>
+    <div class="container" id="errorContainer">
+    </div>
+
+    <script>
+        const errorMap = {
+            100: "继续 - 服务器已收到请求头，等待请求体",
+            101: "切换协议 - 服务器根据客户端请求切换协议",
+            102: "处理中 - 服务器正在处理请求，暂时无法返回响应",
+            103: "提前提示 - 服务器提前返回响应头",
+            200: "成功 - 请求已正常处理完成",
+            201: "已创建 - 请求成功并创建了新资源",
+            202: "已接受 - 请求已接收但未处理完成",
+            203: "非授权信息 - 返回的信息来自非源服务器",
+            204: "无内容 - 请求成功但无返回内容",
+            205: "重置内容 - 请求成功且需重置文档视图",
+            206: "部分内容 - 服务器只返回部分资源",
+            207: "多状态 - 服务器返回多个状态码",
+            208: "已报告 - 资源已被报告过",
+            226: "IM已使用 - 服务器已执行增量请求",
+            300: "多种选择 - 请求的资源有多个可用位置",
+            301: "永久移动 - 资源已永久迁移到新地址",
+            302: "临时移动 - 资源临时迁移到新地址",
+            303: "查看其他位置 - 需用GET请求另一个URI",
+            304: "未修改 - 资源未修改，使用本地缓存",
+            305: "使用代理 - 需通过指定代理访问资源",
+            306: "未使用 - 此状态码已废弃",
+            307: "临时重定向 - 保持请求方法重定向",
+            308: "永久重定向 - 保持请求方法永久重定向",
+            400: "请求错误 - 服务器无法理解请求格式",
+            401: "未授权 - 请求需要用户身份验证",
+            402: "需要付款 - 该状态码暂未实际使用",
+            403: "禁止访问 - 服务器拒绝处理该请求",
+            404: "未找到 - 你要找的页面飞走啦",
+            405: "方法禁用 - 请求使用的方法被服务器禁止",
+            406: "不接受 - 服务器无法生成符合要求的响应",
+            407: "需要代理认证 - 需先通过代理服务器认证",
+            408: "请求超时 - 服务器等待请求超时",
+            409: "冲突 - 请求与服务器当前状态冲突",
+            410: "已删除 - 请求的资源已永久删除",
+            411: "需要长度 - 服务器需要请求内容长度",
+            412: "前置条件失败 - 请求头的前置条件不满足",
+            413: "请求体过大 - 请求内容超过服务器限制",
+            414: "URI过长 - 请求的URL超过服务器允许长度",
+            415: "不支持的媒体类型 - 服务器不支持请求的媒体格式",
+            416: "范围不满足 - 请求的资源范围无效",
+            417: "预期失败 - 服务器无法满足Expect请求头",
+            418: "我是茶壶 - 愚人节彩蛋，服务器拒绝煮咖啡",
+            421: "请求定向错误 - 请求被定向到无法响应的服务器",
+            422: "无法处理的实体 - 请求格式正确但数据无效",
+            423: "资源锁定 - 请求的资源被锁定",
+            424: "依赖失败 - 之前的请求失败导致当前请求失败",
+            425: "过早起动 - 请求发送时机过早",
+            426: "需要升级 - 服务器要求客户端升级协议",
+            428: "需要前置条件 - 服务器要求请求包含前置条件",
+            429: "请求过多 - 你发送请求太频繁了，歇会儿吧",
+            431: "请求头过大 - 请求头字段超过服务器限制",
+            451: "因法律原因不可用 - 资源因法律要求被屏蔽",
+            500: "服务器内部错误 - 服务器出了点小毛病",
+            501: "未实现 - 服务器不支持该请求功能",
+            502: "网关错误 - 服务器作为网关收到无效响应",
+            503: "服务不可用 - 服务器暂时过载或维护中",
+            504: "网关超时 - 服务器作为网关等待响应超时",
+            505: "HTTP版本不支持 - 服务器不支持请求的HTTP版本",
+            506: "变体也协商 - 服务器内部内容协商失败",
+            507: "存储空间不足 - 服务器无法存储响应所需内容",
+            508: "检测到循环 - 服务器检测到请求处理循环",
+            510: "未扩展 - 请求需要扩展但服务器不支持",
+            511: "需要网络认证 - 需要认证才能访问网络",
+            10000: "服务器炸飞了 - 后端小哥正在紧急抢修中...",
+            10001: "例行维护 - 系统正在升级维护，稍后再来看看吧"
+        };
+
+        function getErrorCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('e');
+        }
+
+        function renderExplainPage() {
+            const container = document.getElementById('errorContainer');
+            container.innerHTML = `
+                <h2 class="explain-title">错误码说明</h2>
+                <div class="error-desc">
+                    <p>这是自定义错误页面，支持以下使用方式：</p>
+                    <ul class="explain-list">
+                        <li>访问带参数：<code>?e=错误码</code> 查看对应错误信息（如 ?e=404、?e=10000）</li>
+                        <li>支持的错误码范围：100-599（标准HTTP错误码）、10000（服务器炸飞了）、10001（例行维护）</li>
+                        <li>示例：<a href="?e=404">?e=404</a
