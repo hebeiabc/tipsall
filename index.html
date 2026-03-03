@@ -10,44 +10,24 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-            cursor: none;
         }
         body {
             background-color: #fff;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
             color: #333;
-            position: relative;
-            overflow: hidden;
-        }
-        .cursor-follower {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: rgba(255, 182, 193, 0.6);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
-        }
-        .cursor-follower.hover {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 182, 193, 0.4);
         }
         .container {
             max-width: 650px;
+            width: 100%;
             background: linear-gradient(135deg, #fff 0%, #fff5f7 100%);
             padding: 50px 40px;
             border-radius: 24px;
             box-shadow: 0 8px 30px rgba(255, 182, 193, 0.15);
             text-align: center;
-            position: relative;
-            z-index: 10;
             border: 1px solid rgba(255, 182, 193, 0.2);
         }
         .error-code {
@@ -75,8 +55,6 @@
             font-size: 16px;
             font-weight: 500;
             margin: 0 8px;
-            border: none;
-            cursor: none;
         }
         .back-btn:hover {
             background-color: #ff6b8b;
@@ -131,9 +109,7 @@
     </style>
 </head>
 <body>
-    <div class="cursor-follower"></div>
-    <div class="container" id="errorContainer">
-    </div>
+    <div class="container" id="errorContainer"></div>
 
     <script>
         const errorMap = {
@@ -218,4 +194,36 @@
                     <ul class="explain-list">
                         <li>访问带参数：<code>?e=错误码</code> 查看对应错误信息（如 ?e=404、?e=10000）</li>
                         <li>支持的错误码范围：100-599（标准HTTP错误码）、10000（服务器炸飞了）、10001（例行维护）</li>
-                        <li>示例：<a href="?e=404">?e=404</a
+                        <li>示例：<a href="?e=404">?e=404</a> | <a href="?e=500">?e=500</a> | <a href="?e=10000">?e=10000</a></li>
+                    </ul>
+                </div>
+                <a href="javascript:history.back()" class="back-btn">返回上一页</a>
+            `;
+        }
+
+        function renderErrorPage(code) {
+            const container = document.getElementById('errorContainer');
+            const isValidCode = errorMap.hasOwnProperty(code);
+            const errorCode = isValidCode ? code : "未知";
+            const errorDesc = isValidCode ? errorMap[code] : "无效的错误码 - 请检查输入的错误码是否正确";
+            
+            container.innerHTML = `
+                <div class="error-code">${errorCode}</div>
+                <div class="error-desc">${errorDesc}</div>
+                <a href="javascript:history.back()" class="back-btn">返回上一页</a>
+                <a href="./" class="back-btn">返回说明页</a>
+            `;
+        }
+
+        window.onload = function() {
+            const errorCode = getErrorCode();
+            if (!errorCode) {
+                renderExplainPage();
+            } else {
+                const code = parseInt(errorCode.trim());
+                renderErrorPage(isNaN(code) ? errorCode : code);
+            }
+        }
+    </script>
+</body>
+</html>
