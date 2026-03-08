@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹤北公益API - 公益AI服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#A4CFF9',
+                        secondary: '#8AB4F8',
+                        light: '#F0F7FF',
+                        neutral: '#4A4A4A',
+                        card: '#FFFFFF',
+                    },
+                    fontFamily: {
+                        sans: ['PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 12px rgba(164, 207, 249, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-dot {
+                background-image: radial-gradient(#8AB4F8 0.5px, transparent 0.5px);
+                background-size: 20px 20px;
+            }
+            .text-shadow-sm {
+                text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            }
+            .border-dashed-custom {
+                border-style: dashed;
+                border-width: 1px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-light bg-dot text-neutral min-h-screen">
+    <header class="py-8 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto text-center">
+            <div class="inline-block bg-primary/20 text-primary text-xs px-3 py-1 rounded-full mb-4">
+                公益AI服务
+            </div>
+            <h1 class="text-[clamp(2rem,4vw,2.5rem)] font-bold mb-2 text-shadow-sm">
+                鹤北公益API
+            </h1>
+            <p class="text-lg text-neutral/80 mb-6">用AI助力公益 ❤️</p>
+            <p class="text-sm text-neutral/60 mb-8">公益性质AI接口服务 | 服务正常运行，7×24小时稳定服务</p>
+        </div>
+    </header>
+
+    <main class="px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="container mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-xl font-semibold mb-2 flex items-center justify-center">
+                    <i class="fa-solid fa-link text-primary mr-2"></i>API 接口地址
+                </h2>
+                <p class="text-sm text-neutral/60">官方唯一接口地址</p>
+            </div>
+
+            <div class="mb-12 max-w-xl mx-auto">
+                <div class="bg-card rounded-xl shadow-soft p-5 border border-primary/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-medium text-neutral">主节点</span>
+                        <span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">稳定</span>
+                    </div>
+                    <div class="bg-light rounded-lg p-3 mb-2">
+                        <input type="text" value="https://api4.yun1.cfd/v1" class="w-full bg-transparent border-none focus:outline-none text-sm" readonly>
+                    </div>
+                    <p class="text-xs text-neutral/60">高速稳定，公益专用</p>
+                </div>
+            </div>
+
+            <div class="bg-card rounded-xl shadow-soft p-6 border border-primary/10 max-w-4xl mx-auto mb-16">
+                <div class="text-center mb-5">
+                    <h3 class="font-medium text-neutral mb-2 flex items-center justify-center">
+                        <i class="fa-solid fa-comments text-primary mr-2"></i>官方交流群
+                    </h3>
+                    <p class="text-xs text-neutral/60">获取教程、技术支持、公益合作</p>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    <button class="bg-primary text-white rounded-lg py-2 hover:bg-primary/90 transition-colors text-sm">
+                        公益一群
+                    </button>
+                    <button class="bg-primary text-white rounded-lg py-2 hover:bg-primary/90 transition-colors text-sm">
+                        公益二群
+                    </button>
+                    <button class="bg-primary text-white rounded-lg py-2 hover:bg-primary/90 transition-colors text-sm">
+                        公益三群
+                    </button>
+                    <button class="bg-primary text-white rounded-lg py-2 hover:bg-primary/90 transition-colors text-sm">
+                        公益四群
+                    </button>
+                    <button class="bg-primary text-white rounded-lg py-2 hover:bg-primary/90 transition-colors text-sm">
+                        公益五群
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <h2 class="text-xl font-semibold mb-2">为什么选择鹤北公益API？</h2>
+                <p class="text-sm text-neutral/60">免费稳定的公益AI接口服务</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-card rounded-xl shadow-soft p-6 border border-primary/10 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-bolt-lightning text-primary text-xl"></i>
+                    </div>
+                    <h3 class="font-medium mb-2">极速响应</h3>
+                    <p class="text-xs text-neutral/60">流畅的调用体验<br>低延迟不卡顿</p>
+                </div>
+
+                <div class="bg-card rounded-xl shadow-soft p-6 border border-primary/10 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-shield-halved text-primary text-xl"></i>
+                    </div>
+                    <h3 class="font-medium mb-2">稳定可靠</h3>
+                    <p class="text-xs text-neutral/60">99%服务可用性<br>公益免费不中断</p>
+                </div>
+
+                <div class="bg-card rounded-xl shadow-soft p-6 border border-primary/10 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-heart text-primary text-xl"></i>
+                    </div>
+                    <h3 class="font-medium mb-2">公益免费</h3>
+                    <p class="text-xs text-neutral/60">纯公益性质<br>无任何使用费用</p>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4 mt-12 max-w-4xl mx-auto">
+                <button class="bg-primary text-white px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors text-sm">
+                    <i class="fa-solid fa-rocket mr-1"></i>开始使用
+                </button>
+                <button class="bg-white text-primary border border-primary px-5 py-2 rounded-lg hover:bg-primary/5 transition-colors text-sm">
+                    <i class="fa-solid fa-book mr-1"></i>使用教程
+                </button>
+                <button class="bg-white text-primary border border-primary px-5 py-2 rounded-lg hover:bg-primary/5 transition-colors text-sm">
+                    <i class="fa-solid fa-headset mr-1"></i>技术支持
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-6 px-4 text-center text-xs text-neutral/50 border-t border-primary/10">
+        <div class="container mx-auto">
+            <p>© 2025 鹤北公益API 版权所有 | 专注于提供免费的公益AI接口服务</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('click', function() {
+                this.select();
+                navigator.clipboard.writeText(this.value).then(() => {
+                    const originalValue = this.value;
+                    this.value = "已复制！";
+                    setTimeout(() => {
+                        this.value = originalValue;
+                    }, 1000);
+                });
+            });
+        });
+
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.textContent.includes('群')){
+                    alert('该群聊二维码已复制到剪贴板，请在微信中粘贴添加');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
